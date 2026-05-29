@@ -4,9 +4,42 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
-<body>
+
+ </head>
+ <link>
+ <script>
+    function login(){
+    let usuario = document.getElementById("usuario").value;
+    let senha = document.getElementById("senha").value;
+ 
+    if(usuario === "aluno" && senha === "123") {
+        mostrarHome();
+        esconderLogin();
+    }
+}
+
+    function mostrarHome(){
+        let home = document.getElementById("home").style.display = "block";
+
     
+    }
+    function esconderLogin(){
+        let login = document.getElementById("login").style.display = "none";
+    }
+    
+<body>
+   
+<section class="" id="login">
+    <div class=""><h1>SISTEMA SENAI YAN</h1></div> 
+    <input type="text" placeholder="Digite o usuário" id="usuario">
+    <input type="password" placeholder="Digite a senha" id="senha">  <br> 
+     <input type="submit" value="Entrar"> <br>
+</section>
+
+<section class="" id= "home">
+<div class=""><h1>BEM VINDO AO SISTEMA SENAI YAN</h1></div>
+</section>
+
 </body>
 
 </html>
