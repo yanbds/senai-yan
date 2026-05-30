@@ -1,240 +1,73 @@
 <!DOCTYPE html>
-<html lang="pt-BR">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Localizador de CEP Minions</title>
 
-  <style>
-    body {
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-      background: linear-gradient(to bottom, #ffe600, #ffd000);
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      background: #fff8c4;
-      width: 380px;
-      padding: 30px;
-      border-radius: 25px;
-      box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-      text-align: center;
-      border: 6px solid #1d4ed8;
-      position: relative;
-    }
-
-    /* Óculos do Minion */
-    .goggles {
-      display: flex;
-      justify-content: center;
-      margin-bottom: 20px;
-    }
-
-    .eye {
-      width: 90px;
-      height: 90px;
-      background: #c0c0c0;
-      border: 8px solid #555;
-      border-radius: 50%;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 0 5px;
-      position: relative;
-    }
-
-    .pupil {
-      width: 40px;
-      height: 40px;
-      background: white;
-      border-radius: 50%;
-      position: relative;
-    }
-
-    .pupil::after {
-      content: "";
-      width: 18px;
-      height: 18px;
-      background: black;
-      border-radius: 50%;
-      position: absolute;
-      top: 11px;
-      left: 11px;
-    }
-
-    h1 {
-      color: #1d4ed8;
-      margin-bottom: 20px;
-      font-size: 28px;
-    }
-
-    input {
-      width: 100%;
-      padding: 14px;
-      border-radius: 12px;
-      border: 3px solid #1d4ed8;
-      font-size: 16px;
-      margin-bottom: 15px;
-      outline: none;
-      box-sizing: border-box;
-    }
-
-    input:focus {
-      border-color: #2563eb;
-      box-shadow: 0 0 10px rgba(37,99,235,0.5);
-    }
-
-    button {
-      width: 100%;
-      padding: 14px;
-      border: none;
-      border-radius: 12px;
-      background: #1d4ed8;
-      color: white;
-      font-size: 18px;
-      font-weight: bold;
-      cursor: pointer;
-      transition: 0.3s;
-    }
-
-    button:hover {
-      background: #2563eb;
-      transform: scale(1.03);
-    }
-
-    #resultado {
-      margin-top: 20px;
-      background: #fff;
-      padding: 15px;
-      border-radius: 12px;
-      text-align: left;
-      line-height: 1.8;
-      border: 2px dashed #1d4ed8;
-    }
-
-    .erro {
-      margin-top: 15px;
-      color: red;
-      font-weight: bold;
-    }
-
-    /* Macacão Minion */
-    .overall {
-      margin-top: 25px;
-      background: #1d4ed8;
-      height: 80px;
-      border-radius: 0 0 20px 20px;
-      position: relative;
-    }
-
-    .pocket {
-      width: 70px;
-      height: 45px;
-      border: 3px solid white;
-      border-radius: 10px;
-      position: absolute;
-      top: 15px;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
 </head>
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.8/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-sRIl4kxILFvY47J16cr9ZwB07vP4J8+LH7qKQnuqkuIAvNWLzeN8tE5YBujZqJLB" crossorigin="anonymous">
+<style>
+
+.textocentralizado{
+  text-align: center;
+  background-color: #68969c4d;
+  color: #000000fd;
+  align-items: center;
+  display: flex;
+  border-radius: 150px 0px 150px 0px;
+  padding: 50px;
+  justify-content: center;
+  font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+  
+  }
+
+</style>
+
+
+
+
+<script>
+function login(){
+let usuario = document.getElementById("usuario").value;
+let senha = document.getElementById("senha").value;
+
+if(usuario == "professor" && senha == ""){
+    alert("Login realizado com sucesso!");
+    mostrarHome();
+    esconderLogin();
+}
+}
+
+function logout(){
+let telaHome = document.getElementById("home").style.display= "none";
+let telaLogin = document.getElementById("login").style.display= "block";
+
+}
+
+function mostrarHome(){
+let telaHome = document.getElementById("home").style.display= "block";
+
+}
+
+function esconderLogin(){
+let telaLogin = document.getElementById("login").style.display= "none";
+}
+
+</script>
 
 <body>
+ <section class="textocentralizado" id="login">
+        <div><h1 style="font-family: arial, sans-serif; font-size: 40px; color: #000000fd;">SISTEMA SENAI YAN</h1><div>
+        <input id="usuario" type="text" placeholder="Digite o usuario" ><br><br>
+        <input id="senha" type="password" placeholder="Digite a senha" ><br><br>
+        <input type="button" value="Entrar" onclick="login()" ><br><br>
 
-  <div class="container">
+    </section>
 
-    <div class="goggles">
-      <div class="eye">
-        <div class="pupil"></div>
-      </div>
-
-      <div class="eye">
-        <div class="pupil"></div>
-      </div>
-    </div>
-
-    <h1>Busca CEP</h1>
-
-    <input 
-      type="text" 
-      id="cepInput" 
-      placeholder="Digite o CEP"
-      maxlength="9"
-    >
-
-    <button onclick="buscarCEP()">
-       Procurar CEP
-    </button>
-
-    <div id="resultado"></div>
-    <div id="erro" class="erro"></div>
-
-    <div class="overall">
-      <div class="pocket"></div>
-    </div>
-
-  </div>
-
-  <script>
-    async function buscarCEP() {
-
-      const cep = document
-        .getElementById("cepInput")
-        .value
-        .replace("-", "");
-
-      const resultado = document.getElementById("resultado");
-      const erro = document.getElementById("erro");
-
-      resultado.innerHTML = "";
-      erro.innerHTML = "";
-
-      if (cep.length !== 8 || isNaN(cep)) {
-        erro.innerHTML = "Digite um CEP válido com 8 números!";
-        return;
-      }
-
-      try {
-
-        const response = await fetch(`https://viacep.com.br/ws/${cep}/json/`);
-        const data = await response.json();
-
-        if (data.erro) {
-          erro.innerHTML = "CEP não encontrado!";
-          return;
-        }
-
-        resultado.innerHTML = `
-          <strong> CEP:</strong> ${data.cep}<br>
-          <strong> Rua:</strong> ${data.logradouro}<br>
-          <strong> Bairro:</strong> ${data.bairro}<br>
-          <strong> Cidade:</strong> ${data.localidade}<br>
-          <strong> Estado:</strong> ${data.uf}
-        `;
-
-      } catch (e) {
-        erro.innerHTML = "Erro ao buscar o CEP!";
-      }
-    }
-
-    // Buscar apertando Enter
-    document.getElementById("cepInput")
-      .addEventListener("keypress", function(event) {
-
-      if (event.key === "Enter") {
-        buscarCEP();
-      }
-
-    });
-
-  </script>
-
+    <section class= "textocentralizado" id="home" style="display: none;"> 
+        <div class=""><h1>BEM VINDO AO SISTEMA SENAI YAN</h1></div>
+     <input type="button" value="Logout" onclick="logout()"><br>
+    </section>
 </body>
 </html>
