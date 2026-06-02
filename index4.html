@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Steam — Login</title>
+<style>
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: #1b2838;
+    background-image: url('https://static.vecteezy.com/system/resources/previews/020/336/732/non_2x/steam-logo-steam-icon-free-free-vector.jpg');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: Arial, sans-serif;
+  }
+
+  .outer { position: relative; }
+
+  .toast {
+    position: absolute;
+    top: -60px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1b4332;
+    border: 1px solid #2d6a4f;
+    border-radius: 8px;
+    padding: 10px 18px;
+    font-size: 13px;
+    color: #95d5b2;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.3s ease, top 0.3s ease;
+    pointer-events: none;
+    z-index: 10;
+  }
+  .toast.show { opacity: 1; top: -50px; }
+  .toast.error { background: #4a1c1c; border-color: #7a2e2e; color: #f08080; }
+
+  .card {
+    background: #2a475e;
+    border-radius: 12px;
+    border: 0.5px solid rgba(255,255,255,0.08);
+    width: 100%;
+    max-width: 380px;
+    overflow: hidden;
+  }
+
+  .card-header {
+    background: #171a21;
+    padding: 20px 24px 16px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 0.5px solid rgba(255,255,255,0.06);
+  }
+  .header-title {
+    font-size: 15px;
+    font-weight: 500;
+    color: #c6d4df;
+    letter-spacing: 0.3px;
+  }
+
+  .card-body { padding: 24px; }
+
+  .field { margin-bottom: 16px; }
+  .field label {
+    display: block;
+    font-size: 12px;
+    color: #8f98a0;
+    margin-bottom: 6px;
+    letter-spacing: 0.3px;
+  }
+  .field input {
+    width: 100%;
+    background: #32485a;
+    border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 8px;
+    padding: 0 12px;
+    height: 38px;
+    color: #c6d4df;
+    font-size: 14px;
+    outline: none;
+    transition: border-color 0.2s;
+    font-family: Arial, sans-serif;
+  }
+  .field input:focus { border-color: #4fc3f7; }
+  .field input::placeholder { color: #546e7a; }
+
+  .row-options {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 20px;
+  }
+  .remember {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-size: 12px;
+    color: #8f98a0;
+    cursor: pointer;
+  }
+  .remember input[type=checkbox] {
+    accent-color: #4fc3f7;
+    width: 14px;
+    height: 14px;
+    cursor: pointer;
+  }
+  .forgot {
+    font-size: 12px;
+    color: #4fc3f7;
+    text-decoration: none;
+  }
+  .forgot:hover { color: #80d8ff; }
+
+  .btn-login {
+    width: 100%;
+    height: 40px;
+    background: #4fc3f7;
+    border: none;
+    border-radius: 8px;
+    color: #0a1929;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.15s, transform 0.1s;
+    font-family: Arial, sans-serif;
+    letter-spacing: 0.3px;
+  }
+  .btn-login:hover { background: #81d4fa; }
+  .btn-login:active { transform: scale(0.98); }
+
+  .divider {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 20px 0;
+  }
+  .divider-line { flex: 1; height: 0.5px; background: rgba(255,255,255,0.08); }
+  .divider-text { font-size: 11px; color: #546e7a; white-space: nowrap; }
+
+  .btn-register {
+    width: 100%;
+    height: 40px;
+    background: transparent;
+    border: 1px solid rgba(255,255,255,0.15);
+    border-radius: 8px;
+    color: #8f98a0;
+    font-size: 14px;
+    cursor: pointer;
+    transition: border-color 0.2s, color 0.2s, background 0.2s;
+    font-family: Arial, sans-serif;
+  }
+  .btn-register:hover {
+    border-color: #4fc3f7;
+    color: #4fc3f7;
+    background: rgba(79,195,247,0.06);
+  }
+</style>
+</head>
+<body>
+
+<div class="outer">
+  <div class="toast" id="toast"></div>
+  <div class="card">
+    <div class="card-header">
+      <svg width="32" height="32" viewBox="0 0 64 64" fill="none">
+        <circle cx="32" cy="32" r="30" fill="#1b2838" stroke="#4fc3f7" stroke-width="1.5"/>
+        <path d="M32 12C21 12 12 21 12 32c0 9.4 6.5 17.3 15.3 19.4l5.5-13.6c-1-.5-1.8-1.4-2-2.6-.4-2.2 1-4.3 3.2-4.7 2.2-.4 4.3 1 4.7 3.2.3 1.8-.6 3.5-2.1 4.3l-5.4 13.5c.8.1 1.6.1 2.4.1 11 0 20-9 20-20S43 12 32 12z" fill="#4fc3f7" opacity="0.9"/>
+      </svg>
+      <span class="header-title">Entrar na Steam</span>
+    </div>
+
+    <div class="card-body" id="login-form">
+      <div class="field">
+        <label>Nome de usuário ou e-mail</label>
+        <input type="text" id="user" placeholder="Digite seu usuário">
+      </div>
+      <div class="field">
+        <label>Senha</label>
+        <input type="password" id="pass" placeholder="Digite sua senha">
+      </div>
+      <div class="row-options">
+        <label class="remember">
+          <input type="checkbox" checked> Lembrar de mim
+        </label>
+      </div>
+      <button class="btn-login" onclick="doLogin()">Entrar</button>
+      <div class="divider">
+        <div class="divider-line"></div>
+        <div class="divider-line"></div>
+      </div>
+    </div>
+  </div>
+
+<div class="card-body" id="home" style="display:none;">
+      <div class="field">
+        <label>Nome de usuário ou e-mail</label>
+        <input type="text" id="user" placeholder="Digite seu usuário">
+      </div>
+      <div class="field">
+      </div>
+</div>
+
+<script>
+  function showToast(msg, isError) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.className = 'toast' + (isError ? ' error' : '');
+    void t.offsetWidth;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function doLogin() {
+    let u = document.getElementById('user').value.trim();
+    let p = document.getElementById('pass').value.trim();
+    if(u == "yan" && p == "1234") {   
+    showToast('Login realizado com sucesso!', false);
+    document.getElementById('login-form').style.display = 'none';
+    document.getElementById('home').style.display = 'block';
+    }
+    else {
+      showToast('Usuário ou senha incorretos.', true);
+    }
+}
+
+</script>
+</body>
+</html>
