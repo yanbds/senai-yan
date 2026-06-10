@@ -3,21 +3,16 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Memória Brainrot</title>
+<title>Jogo da Memória — SENAI</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Mono:wght@400;700&family=Syne:wght@700;800&display=swap" rel="stylesheet">
 
 <style>
 /* ============================================================
    🎨 VARIÁVEIS — ALTERE AQUI PARA MUDAR O VISUAL DO JOGO
    ============================================================ */
-  .body {
-    background-image: url('https://tse2.mm.bing.net/th/id/OIP.-t4CX37GbppTjI2ropZGUQHaEK?cb=thfvnextfalcon2&rs=1&pid=ImgDetMain&o=7&rm=3');
-    background-size: cover;
-    background-position: center;
-  }
-   :root {
+:root {
   /* Cores principais */
-  --cor-fundo:       #000000;
+  --cor-fundo:       #0d0d1a;
   --cor-painel:      #1a1a2e;
   --cor-borda:       #2a2a4a;
 
@@ -28,10 +23,9 @@
   --cor-carta-hover: #252550;
 
   /* Estados */
-  --cor-acerto:      #e50013;
-  --cor-tittle:     #00e5a0;
+  --cor-acerto:      #00e5a0;
   --cor-erro:        #ff4f6a;
-  --cor-destaque:    #fafafa42;
+  --cor-destaque:    #7c6af7;
   --cor-ouro:        #ffd700;
 
   /* Textos */
@@ -39,7 +33,7 @@
   --cor-texto-dim:   #6b6b9a;
 
   /* Tipografia */
-  --fonte-titulo:    'Syne',;
+  --fonte-titulo:    'Syne', sans-serif;
   --fonte-corpo:     'Space Mono', monospace;
 
   /* Tamanhos */
@@ -129,6 +123,11 @@ header p {
 }
 
 .stat-valor.pulsar { animation: pulsar 0.4s ease; }
+
+.stat-valor.aviso {
+  color: var(--cor-erro);
+  animation: pulsarAviso 0.6s ease infinite;
+}
 
 .stat-label {
   font-size: 0.65rem;
@@ -224,7 +223,7 @@ header p {
 
 /* Estado acertado */
 .carta.acertada .carta-frente {
-  border-color: var(--cor-tittle);
+  border-color: var(--cor-acerto);
   background: #001a0e;
   box-shadow: 0 0 18px #00e5a040, inset 0 0 30px #00e5a008;
   animation: brilharAcerto 0.5s ease;
@@ -272,6 +271,34 @@ header p {
 .vitoria p { font-size: 0.8rem; color: var(--cor-texto-dim); }
 
 /* ============================================================
+   MENSAGEM DE DERROTA
+   ============================================================ */
+.derrota {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  background: var(--cor-painel);
+  border: 2px solid var(--cor-erro);
+  border-radius: var(--raio-painel);
+  padding: 2rem 2.5rem;
+  text-align: center;
+  animation: escalar 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+}
+
+.derrota.visivel { display: flex; }
+
+.derrota-emoji { font-size: 3.5rem; animation: balançar 0.8s ease-in-out infinite; }
+
+.derrota h2 {
+  font-family: var(--fonte-titulo);
+  font-size: 1.8rem;
+  color: var(--cor-erro);
+}
+
+.derrota p { font-size: 0.8rem; color: var(--cor-texto-dim); }
+
+/* ============================================================
    BOTÃO
    ============================================================ */
 button {
@@ -311,7 +338,7 @@ button:active { transform: translateY(0); opacity: 0.85; }
 
 .progresso-barra {
   height: 100%;
-  background: linear-gradient(90deg, var(--cor-destaque), var(--cor-tittle));
+  background: linear-gradient(90deg, var(--cor-destaque), var(--cor-acerto));
   border-radius: 4px;
   width: 0%;
   transition: width 0.5s ease;
@@ -358,6 +385,17 @@ button:active { transform: translateY(0); opacity: 0.85; }
   100% { transform: scale(1); }
 }
 
+@keyframes pulsarAviso {
+  0%, 100% { 
+    transform: scale(1);
+    text-shadow: 0 0 10px transparent;
+  }
+  50% { 
+    transform: scale(1.1);
+    text-shadow: 0 0 15px #ff4f6a;
+  }
+}
+
 @keyframes shake {
   0%, 100% { transform: rotateY(180deg) translateX(0); }
   20%       { transform: rotateY(180deg) translateX(-6px); }
@@ -373,8 +411,8 @@ button:active { transform: translateY(0); opacity: 0.85; }
 }
 
 @keyframes girar {
-  from { transform: rotate(100000000000deg); }
-  to   { transform: rotate(10000000000000000000000deg); }
+  from { transform: rotate(0); }
+  to   { transform: rotate(360deg); }
 }
 
 @keyframes escalar {
@@ -385,6 +423,11 @@ button:active { transform: translateY(0); opacity: 0.85; }
 @keyframes flutuar {
   0%, 100% { transform: translateY(0); }
   50%       { transform: translateY(-8px); }
+}
+
+@keyframes balançar {
+  0%, 100% { transform: rotate(-5deg); }
+  50%       { transform: rotate(5deg); }
 }
 
 /* ============================================================
@@ -402,7 +445,7 @@ button:active { transform: translateY(0); opacity: 0.85; }
 <body>
 
 <header>
-  <h1>🧠 Memória Brainrot</h1>
+  <h1>🧠 Jogo da Memória</h1>
   <p>SENAI · Programador Front-End</p>
 </header>
 
@@ -417,7 +460,7 @@ button:active { transform: translateY(0); opacity: 0.85; }
     <div class="stat-label">Acertos</div>
   </div>
   <div class="stat">
-    <div class="stat-valor" id="tempo">0s</div>
+    <div class="stat-valor" id="tempo">5:00</div>
     <div class="stat-label">Tempo</div>
   </div>
 </div>
@@ -437,22 +480,30 @@ button:active { transform: translateY(0); opacity: 0.85; }
   <p id="msg-vitoria">Você completou o jogo!</p>
 </div>
 
+<!-- MENSAGEM DE DERROTA -->
+<div class="derrota" id="derrota" role="alert" aria-live="polite">
+  <div class="derrota-emoji">⏰</div>
+  <h2>Tempo Esgotado!</h2>
+  <p id="msg-derrota">Tente novamente!</p>
+</div>
+
 <!-- BOTÃO -->
 <button id="btn-reiniciar" onclick="iniciarJogo()">↺ Novo Jogo</button>
 
 <!-- DICA PARA ALUNOS -->
 <p class="dica">
-  Dica: edite as variáveis <code>:root</code> no CSS para mudar o visual!
+  ⏱️ Você tem <code>5 minutos</code> para encontrar todos os pares!
 </p>
 
 <script>
 // ============================================================
 //  🎮 CONFIGURAÇÕES — altere aqui para personalizar
 // ============================================================
-const EMOJIS = ['🦈 ', '🐊', '🪵', '🐒', '☕', '🌵', '🍌', '🐬'];
+const EMOJIS = ['🚀', '🎸', '🦊', '🌈', '🔥', '💎', '🎯', '⚡'];
 // Dica: troque por outros emojis ou use letras, números, etc.
 
 const TOTAL_PARES = EMOJIS.length; // 8 pares = 16 cartas
+const TEMPO_LIMITE = 300; // Tempo limite em segundos (5 minutos) — altere conforme desejar
 
 // ============================================================
 //  ESTADO DO JOGO
@@ -461,7 +512,7 @@ let cartasViradas  = [];   // cartas atualmente viradas (max 2)
 let acertos        = 0;    // pares encontrados
 let tentativas     = 0;    // total de tentativas
 let bloqueado      = false;// impede clique durante animação
-let inicio         = null; // timestamp de início
+let tempoRestante  = TEMPO_LIMITE; // tempo restante em segundos
 let timerID        = null; // ID do setInterval do cronômetro
 
 // ============================================================
@@ -473,17 +524,19 @@ function iniciarJogo() {
   acertos       = 0;
   tentativas    = 0;
   bloqueado     = false;
+  tempoRestante = TEMPO_LIMITE;
 
   // Resetar UI
   document.getElementById('tentativas').textContent = '0';
   document.getElementById('acertos').textContent    = '0';
-  document.getElementById('tempo').textContent      = '0s';
+  document.getElementById('tempo').textContent      = formatarTempo(TEMPO_LIMITE);
+  document.getElementById('tempo').classList.remove('aviso');
   document.getElementById('progresso').style.width  = '0%';
   document.getElementById('vitoria').classList.remove('visivel');
+  document.getElementById('derrota').classList.remove('visivel');
 
   // Parar cronômetro anterior
   clearInterval(timerID);
-  inicio  = Date.now();
   timerID = setInterval(atualizarTempo, 1000);
 
   // Criar e embaralhar cartas
@@ -548,8 +601,8 @@ function clicarCarta(carta) {
     setTimeout(() => {
       c1.classList.add('acertada');
       c2.classList.add('acertada');
-      c1.classList.remove('virado');
-      c2.classList.remove('virado');
+      c1.classList.remove('virada');
+      c2.classList.remove('virada');
       c1.setAttribute('aria-label', `Par encontrado: ${c1.dataset.emoji}`);
       c2.setAttribute('aria-label', `Par encontrado: ${c2.dataset.emoji}`);
       cartasViradas = [];
@@ -583,14 +636,28 @@ function clicarCarta(carta) {
 // ============================================================
 function exibirVitoria() {
   clearInterval(timerID);
-  const segundos = Math.round((Date.now() - inicio) / 1000);
   const eficiencia = Math.round((TOTAL_PARES / tentativas) * 100);
 
   document.getElementById('msg-vitoria').textContent =
-    `${tentativas} tentativas · ${segundos}s · ${eficiencia}% de eficiência`;
+    `${tentativas} tentativas · ${formatarTempo(TEMPO_LIMITE - tempoRestante)} · ${eficiencia}% de eficiência`;
 
   setTimeout(() => {
     document.getElementById('vitoria').classList.add('visivel');
+  }, 300);
+}
+
+// ============================================================
+//  DERROTA (TEMPO ESGOTADO)
+// ============================================================
+function exibirDerrota() {
+  clearInterval(timerID);
+  bloqueado = true;
+
+  document.getElementById('msg-derrota').textContent =
+    `Tempo esgotado! Você encontrou ${acertos}/${TOTAL_PARES} pares em ${tentativas} tentativas.`;
+
+  setTimeout(() => {
+    document.getElementById('derrota').classList.add('visivel');
   }, 300);
 }
 
@@ -615,9 +682,31 @@ function atualizarStat(id, valor) {
   el.classList.add('pulsar');
 }
 
+function formatarTempo(segundos) {
+  const min = Math.floor(segundos / 60);
+  const seg = segundos % 60;
+  return `${min}:${seg.toString().padStart(2, '0')}`;
+}
+
 function atualizarTempo() {
-  const s = Math.round((Date.now() - inicio) / 1000);
-  document.getElementById('tempo').textContent = `${s}s`;
+  tempoRestante--;
+
+  // Atualizar display
+  const display = document.getElementById('tempo');
+  display.textContent = formatarTempo(tempoRestante);
+
+  // Efeito visual quando tempo está acabando
+  if (tempoRestante <= 10) {
+    display.classList.add('aviso');
+  } else {
+    display.classList.remove('aviso');
+  }
+
+  // Verificar se acabou o tempo
+  if (tempoRestante <= 0) {
+    clearInterval(timerID);
+    exibirDerrota();
+  }
 }
 
 function atualizarProgresso(pct) {
